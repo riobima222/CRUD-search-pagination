@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { formatDate } from "@/lib/utils";
+
 
 const ContactTable = () => {
   // STATE :
@@ -33,7 +35,9 @@ const ContactTable = () => {
               <td className="py-3 px-6">{index + 1}</td>
               <td className="py-3 px-6">{contact.name}</td>
               <td className="py-3 px-6">{contact.phone}</td>
-              <td className="py-3 px-6">{contact.createdAt.toString()}</td>
+              <td className="py-3 px-6">
+                {formatDate(contact.createdAt.toString())}
+              </td>
               <td></td>
             </tr>
           ))}
