@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { formatDate } from "@/lib/utils";
 
 // COMPONENTS :
 import { DeleteButton, EditButton } from "@/components/buttons";
+import { ContactContext } from "@/context/contacts";
 
 const ContactTable = () => {
   // STATE :
-  const [contacts, setContacts] = useState([]);
+  const {contacts, setContacts}: any = useContext(ContactContext)
 
   // HOOKS
   useEffect(() => {
@@ -42,7 +43,7 @@ const ContactTable = () => {
               </td>
               <td className="flex justify-center gap-1 py-3">
                 <EditButton id={contact.id}/>
-                <DeleteButton />
+                <DeleteButton id={contact.id as string}/>
               </td>
             </tr>
           ))}

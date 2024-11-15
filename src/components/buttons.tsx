@@ -2,6 +2,9 @@ import Link from "next/link";
 import { IoAddSharp, IoPencil, IoTrashOutline } from "react-icons/io5";
 import { useFormStatus } from "react-dom";
 import clsx from "clsx";
+import { deleteContact } from "@/lib/action";
+import { ContactContext } from "@/context/contacts";
+import React, { useContext } from "react";
 
 export const CreateButton = () => {
   return (
@@ -15,7 +18,7 @@ export const CreateButton = () => {
   );
 };
 
-export const EditButton = ({id}: {id: string}) => {
+export const EditButton = ({ id }: { id: string }) => {
   return (
     <Link
       href={`/contacts/edit/${id}`}
@@ -26,32 +29,43 @@ export const EditButton = ({id}: {id: string}) => {
   );
 };
 
-export const DeleteButton = () => {
+export const DeleteButton = ({ id }: { id: string }) => {
+  const deleteContactWithId = deleteContact.bind(null, id);
+  const { setContacts }: any = useContext(ContactContext);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res: any = await deleteContactWithId();
+    console.log("lihat res: ", res)
+    if (res === true) {
+      const res = await fetch("/api/contact");
+      const response = await res.json();
+      if (res.ok) {
+        setContacts(response.data);
+      } else alert("terjadi kesalahan: ");
+    }
+  };
   return (
-    <button
-      className="rounded-sm border p-1 hover:bg-gray-100"
-    >
-      <IoTrashOutline size={20} />
-    </button>
+    <form onSubmit={(e) => handleSubmit(e)}>
+      <button className="rounded-sm border p-1 hover:bg-gray-100">
+        <IoTrashOutline size={20} />
+      </button>
+    </form>
   );
 };
 
-export const SubmitButton = ({label} : {label: string}) => {
-  const {pending} = useFormStatus()
-  
+export const SubmitButton = ({ label }: { label: string }) => {
+  const { pending } = useFormStatus();
+
   const className = clsx(
     "text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-sm text-sm w-full px-5 py-3 text-center",
     {
-      "opacity-50 cursor-progress" : pending
+      "opacity-50 cursor-progress": pending,
     }
   );
 
   return (
-    <button
-      type="submit"
-      className={className}
-      disabled={pending}
-    >
+    <button type="submit" className={className} disabled={pending}>
       {label === "save" ? (
         <span>{pending ? "saving..." : "save"}</span>
       ) : (
@@ -59,4 +73,4 @@ export const SubmitButton = ({label} : {label: string}) => {
       )}
     </button>
   );
-}
+};

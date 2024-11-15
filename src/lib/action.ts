@@ -55,3 +55,19 @@ export const updateContact = async ( id : string, prevState: any, formData: Form
   }
 };
 
+export const deleteContact = async ( id : string) => {
+  const res = await fetch("/api/contact/" + id, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    alert("Failed to delete contact");
+  } else {
+    return true;
+  }
+};
+
+
