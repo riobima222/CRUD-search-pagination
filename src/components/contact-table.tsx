@@ -41,7 +41,7 @@ const ContactTable = () => {
                 {formatDate(contact.createdAt.toString())}
               </td>
               <td className="flex justify-center gap-1 py-3">
-                <EditButton />
+                <EditButton id={contact.id}/>
                 <DeleteButton />
               </td>
             </tr>

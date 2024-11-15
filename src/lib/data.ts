@@ -10,3 +10,14 @@ export const getContacts = async () => {
     throw new Error("Gagal mengambil contact");
   }
 };
+
+export const getContactById = async (id: string) => {
+   try {
+    const contact = await prisma.contact.findUnique({
+      where: {id}
+    })
+    return contact
+   } catch(err) {
+    return false;
+   }
+}

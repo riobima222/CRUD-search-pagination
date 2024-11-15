@@ -29,3 +29,29 @@ export const action = async (prevState: any, formData: FormData) => {
     return { message: "Failed to create contact" };
   }
 };
+
+export const updateContact = async ( id : string, prevState: any, formData: FormData) => {
+  const validatedFields = contactSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
+  if (!validatedFields.success) {
+    return {
+      Error: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const res = await fetch("/api/contact/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({data: validatedFields.data, id}),
+    cache: "no-store",
+  });
+  if (res.ok) {
+    return { success: true };
+  } else {
+    return { message: "Failed to create contact" };
+  }
+};
+
