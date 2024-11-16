@@ -5,21 +5,23 @@ import { formatDate } from "@/lib/utils";
 import { DeleteButton, EditButton } from "@/components/buttons";
 import { ContactContext } from "@/context/contacts";
 
-const ContactTable = () => {
+const ContactTable = ({query, currentPage}: {query: string, currentPage: number}) => {
   // STATE :
   const {contacts, setContacts}: any = useContext(ContactContext)
 
   // HOOKS
   useEffect(() => {
     const retriveContacts = async () => {
-      const res = await fetch("/api/contact");
+      const res = await fetch(
+        `/api/contact?${query ? `query=${query}` : ""}&page=${currentPage}`
+      );
       const response = await res.json();
       if (res.ok) {
         setContacts(response.data);
       } else console.log("terjadi kesalahan: ", response);
     };
     retriveContacts();
-  }, []);
+  }, [query, currentPage]);
   return (
     <table className="w-full text-sm text-left text-gray-500">
       <thead className="text-sm text-gray-700 uppercase bg-gray-50">
