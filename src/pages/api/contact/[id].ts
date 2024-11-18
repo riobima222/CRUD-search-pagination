@@ -14,7 +14,6 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
         }
     } else if (req.method === "POST") {
         const id = req.query.id
-        console.log('lihat id: ', id)
         return res.status(200).json({status: true, message: "berhasil"})
     }  else if (req.method === "DELETE") {
         const id: any = req.query.id
